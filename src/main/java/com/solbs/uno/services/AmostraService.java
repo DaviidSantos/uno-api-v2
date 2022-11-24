@@ -2,6 +2,7 @@ package com.solbs.uno.services;
 
 import com.solbs.uno.dtos.QuantidadeDeAmostraPorStatusDto;
 import com.solbs.uno.entities.Amostra;
+import com.solbs.uno.entities.SolicitacaoDeAnalise;
 import com.solbs.uno.repositories.AmostraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,6 +72,15 @@ public class AmostraService {
      */
     public List<Amostra> procurarAmostrasEmFalta() {
         return amostraRepository.findAmostraEmFalta();
+    }
+
+    /**
+     * Método que retorna todas as amostras de uma solicitação de análise
+     * @param solicitacaoDeAnalise Solicitação de Análise
+     * @return Lista de Amostras
+     */
+    public List<Amostra> procurarAmostraPorSolicitacaoDeAnalise(SolicitacaoDeAnalise solicitacaoDeAnalise){
+        return amostraRepository.findAmostraBySolicitacaoDeAnalise(solicitacaoDeAnalise);
     }
 
     /**

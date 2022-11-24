@@ -36,7 +36,7 @@ public class AmostraController {
         Amostra amostra = new Amostra();
         SolicitacaoDeAnalise solicitacaoDeAnalise = solicitacaoDeAnaliseService.procurarSolicitacaoDeAnalisePeloId(amostraDto.getSolicitacaoDeAnalise());
         BeanUtils.copyProperties(amostraDto, amostra);
-        StatusAmostra statusAmostra = StatusAmostra.valor(amostraDto.getStatusAmostra());
+        StatusAmostra statusAmostra = StatusAmostra.Aguardando_Análise;
         amostra.setStatusAmostra(statusAmostra);
         amostra.setSolicitacaoDeAnalise(solicitacaoDeAnalise);
         amostra.setDataDeEntrada(Instant.now());
@@ -127,5 +127,11 @@ public class AmostraController {
     @GetMapping("/quantidade-status")
     public ResponseEntity<QuantidadeDeAmostraPorStatusDto> quantidadeAmostrasPorStatus(){
         return ResponseEntity.status(HttpStatus.OK).body(amostraService.retornarQuantidadeAmostraPorStatus());
+    }
+
+    @GetMapping("/solicitacao-de-analise/{idSA}")
+    public ResponseEntity<List<Amostra>> procurarAmostraPorSolicitacaoDeAnalise(@PathVariable String idSA){
+        SolicitacaoDeAnalise solicitacaoDeAnalise = solicitacaoDeAnaliseService.procurarSolicitacaoDeAnalisePeloId(idSA);
+        return ResponseEntity.status(HttpStatus.OK).body(amostraService.procurarAmostraPorSolicitacaoDeAnalise(solicitacaoDeAnalise));
     }
 }
