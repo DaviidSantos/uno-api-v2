@@ -1,4 +1,4 @@
-package com.solbs.uno.entities.geradordeid;
+package com.solbs.uno.entities.customid;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
