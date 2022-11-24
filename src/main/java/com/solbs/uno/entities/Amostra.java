@@ -43,7 +43,7 @@ public class Amostra implements Serializable {
     @Column(nullable = false)
     private String tipo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 9)
     private String notaFiscal;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
