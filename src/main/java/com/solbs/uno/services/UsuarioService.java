@@ -1,8 +1,11 @@
 package com.solbs.uno.services;
 
+import com.solbs.uno.entities.Cargo;
 import com.solbs.uno.entities.Usuario;
+import com.solbs.uno.repositories.CargoRepository;
 import com.solbs.uno.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -13,6 +16,9 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    CargoRepository cargoRepository;
+
     /**
      * Método que salva um usuário na base de dados
      * @param usuario Usuário a ser salvo
@@ -20,6 +26,7 @@ public class UsuarioService {
      */
     @Transactional
     public Usuario salvarUsuario(Usuario usuario){
+        usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
@@ -56,7 +63,20 @@ public class UsuarioService {
      * @return Usuário atualizado
      */
     public Usuario alterarSenha(Usuario usuario, String novaSenha){
-        usuario.setSenha(novaSenha);
+        usuario.setSenha(new BCryptPasswordEncoder().encode(novaSenha));
         return usuarioRepository.save(usuario);
+    }
+
+    /**
+     * Método que retorna um cargo da base de dados
+     * @param id Id do Cargo
+     * @return Cargo
+     */
+    public Cargo procurarCargo(Long id){
+        return cargoRepository.findById(id).get();
+    }
+
+    public boolean existsByEmail(String email) {
+        return usuarioRepository.existsByEmail(email);
     }
 }

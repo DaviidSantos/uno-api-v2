@@ -11,7 +11,7 @@ public class UsuarioDto {
     private String nome;
 
     @NotBlank
-    private Cargos cargo;
+    private Long cargo;
 
     @NotBlank
     private String email;
@@ -28,11 +28,11 @@ public class UsuarioDto {
         this.nome = nome;
     }
 
-    public Cargos getCargo() {
+    public Long getCargo() {
         return cargo;
     }
 
-    public void setCargo(Cargos cargo) {
+    public void setCargo(Long cargo) {
         this.cargo = cargo;
     }
 

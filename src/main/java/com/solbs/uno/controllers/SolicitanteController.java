@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ public class SolicitanteController {
      * @param solicitanteDto Dados do solicitante que será cadastrado
      * @return Entidade de resposta com mensagem de conflito com CNPJ cadastrado ou Entidade de resposta com o solicitante cadastrado
      */
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'VENDEDOR')")
     @PostMapping
     public ResponseEntity<Object> cadastrarSolicitante(@RequestBody @Valid SolicitanteDto solicitanteDto){
         if (solicitanteService.existsByCnpj(solicitanteDto.getCnpj())){
@@ -39,6 +41,7 @@ public class SolicitanteController {
      * Método HTTP que retorna todos os solicitantes cadastrados
      * @return Lista com todos Solicitantes
      */
+    @PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<List<Solicitante>> retornarTodosSolicitantes(){
         List<Solicitante> lista = solicitanteService.procurarTodosSolicitantes();
@@ -50,6 +53,7 @@ public class SolicitanteController {
      * @param cnpj CNPJ que será buscado na base de dados
      * @return Solicitante
      */
+    @PreAuthorize("permitAll()")
     @GetMapping("/{cnpj}")
     public ResponseEntity<Solicitante> retornarSolicitantePorCnpj(@PathVariable String cnpj){
         return ResponseEntity.status(HttpStatus.OK).body(solicitanteService.procurarSolicitantePeloCnpj(cnpj));
@@ -61,6 +65,7 @@ public class SolicitanteController {
      * @param dados Dados que serão atualizados no solicitante
      * @return Entidade de resposta HTTP
      */
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'VENDEDOR')")
     @PutMapping("/{cnpj}")
     public ResponseEntity<Object> atualizarSolicitante(@PathVariable String cnpj, @RequestBody SolicitanteDto dados) {
         Solicitante solicitante = solicitanteService.procurarSolicitantePeloCnpj(cnpj);

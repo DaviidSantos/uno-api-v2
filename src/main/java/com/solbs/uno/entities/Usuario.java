@@ -3,14 +3,18 @@ package com.solbs.uno.entities;
 import com.solbs.uno.entities.enums.Cargos;
 import com.solbs.uno.entities.customid.IdPrefixado;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_usuario")
-public class Usuario implements Serializable {
+public class Usuario implements UserDetails, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -21,15 +25,16 @@ public class Usuario implements Serializable {
                     @org.hibernate.annotations.Parameter(name = IdPrefixado.VALUE_PREFIX_PARAMETER, value = "US_"),
                     @org.hibernate.annotations.Parameter(name = IdPrefixado.NUMBER_FORMAT_PARAMETER, value = "%05d")
             })
-    private Long idUsuario;
+    private String idUsuario;
 
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false)
-    private Cargos cargo;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cargo")
+    private Cargo cargo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -38,7 +43,7 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(Long idUsuario, String nome, Cargos cargo, String email, String senha) {
+    public Usuario(String idUsuario, String nome, Cargo cargo, String email, String senha) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.cargo = cargo;
@@ -46,11 +51,11 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public Long getIdUsuario() {
+    public String getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(Long idUsuario) {
+    public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -62,11 +67,11 @@ public class Usuario implements Serializable {
         this.nome = nome;
     }
 
-    public Cargos getCargo() {
+    public Cargo getCargo() {
         return cargo;
     }
 
-    public void setCargo(Cargos cargo) {
+    public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
 
@@ -87,6 +92,41 @@ public class Usuario implements Serializable {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(cargo);
+    }
+
+    @Override
+    public String getPassword() {
+        return this.senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -100,5 +140,4 @@ public class Usuario implements Serializable {
     public int hashCode() {
         return idUsuario != null ? idUsuario.hashCode() : 0;
     }
-
 }
