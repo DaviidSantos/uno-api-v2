@@ -1,5 +1,6 @@
 package com.solbs.uno.services;
 
+import com.solbs.uno.dtos.SolicitanteDto;
 import com.solbs.uno.entities.Solicitante;
 import com.solbs.uno.repositories.SolicitanteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class SolicitanteService {
      * @param dados Dados do solicitante que serão atualizados
      * @return Solicitante atualizado
      */
-    public Solicitante atualizarDadosSolicitante(Solicitante solicitante, Solicitante dados) {
+    public Solicitante atualizarDadosSolicitante(Solicitante solicitante, SolicitanteDto dados) {
         if (dados.getNomeFantasia() != null) {
             solicitante.setNomeFantasia(dados.getNomeFantasia());
         }
