@@ -3,10 +3,12 @@ package com.solbs.uno.services;
 import com.solbs.uno.entities.Ensaio;
 import com.solbs.uno.repositories.EnsaioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
 public class EnsaioService {
     @Autowired
     private EnsaioRepository ensaioRepository;
