@@ -83,6 +83,7 @@ public class SolicitacaoDeAnaliseController {
      * @return Entidade de resposta com lista de Solicitações de Análise
      */
     @PreAuthorize("hasAnyAuthority('ADMIN', 'VENDEDOR')")
+
     @GetMapping("/solicitante/{solicitante}")
     public ResponseEntity<List<SolicitacaoDeAnalise>> solicitacaoDeAnalisePorSolicitante(@PathVariable String solicitante){
         Solicitante solicitanteModel = solicitanteService.procurarSolicitantePeloCnpj(solicitante);

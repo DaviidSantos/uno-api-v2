@@ -79,4 +79,8 @@ public class UsuarioService {
     public boolean existsByEmail(String email) {
         return usuarioRepository.existsByEmail(email);
     }
+
+    public Usuario procurarUsuarioPorEmail(String username) {
+        return usuarioRepository.findByEmail(username).get();
+    }
 }
